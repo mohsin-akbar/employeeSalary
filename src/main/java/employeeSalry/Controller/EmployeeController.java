@@ -1,51 +1,42 @@
 package employeeSalry.Controller;
 
 import employeeSalry.entity.Employee;
-import employeeSalry.entity.Salary;
-import employeeSalry.payLoad.EmployeeDto;
-import employeeSalry.payLoad.SalaryDto;
-import employeeSalry.service.EmployeeService;
-import employeeSalry.service.SalaryService;
+import employeeSalry.payLoad.JwtRequest;
+import employeeSalry.payLoad.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import java.util.*;
 
 @RestController
-@RequestMapping("/api/employee")
+@RequestMapping("/employees")
 public class EmployeeController {
 
     @Autowired
-    private EmployeeService employeeService;
+    private JwtUtil jwtUtil;
+    private static final List<Employee> employees = new ArrayList<>();
 
-    @Autowired
-    private SalaryService salaryService;
-
-    @PostMapping
-    public ResponseEntity<EmployeeDto> createEmployee(@RequestBody EmployeeDto employeeDto){
-        EmployeeDto employee = employeeService.createEmployee(employeeDto);
-
-        return new ResponseEntity<>(employee, HttpStatus.CREATED);
-
-    }
-    @PostMapping("/{eid}/salary")
-    public ResponseEntity<SalaryDto> createSalary(@PathVariable("eid") long eid, @RequestBody SalaryDto salaryDto){
-        SalaryDto salary = salaryService.createSalary(eid, salaryDto);
-        return new ResponseEntity<>(salary,HttpStatus.CREATED);
+    static {
+        employees.add(new Employee(101, "Mohsin", "mohsin@gmail.com", "IT"));
+        employees.add(new Employee(102, "Deepika", "deepika@gmail.com", "HR"));
     }
 
-    @DeleteMapping("/{eid}")
-    public ResponseEntity<String> deleteEmployee(@PathVariable("eid") long eid){
-        employeeService.deleteEmployee(eid);
-
-        return new ResponseEntity<>("the employee record deleted",HttpStatus.OK);
+    //for validating the user/admin
+    @GetMapping("/generateToken")
+    public String generateToken(@RequestBody JwtRequest jwtRequest){
+        return jwtUtil.generateToken(jwtRequest.getSub(),jwtRequest.getRole());
     }
 
-    @GetMapping("/{eid}")
-    public ResponseEntity<EmployeeDto> findEmployeeById(@PathVariable("eid") long eid){
-        EmployeeDto employeeDto = employeeService.findEmployeeById(eid);
-        return new ResponseEntity<>(employeeDto,HttpStatus.OK);
+    @GetMapping("/all")
+    public List<Employee> getAllEmployees() {
+        return employees;
+    }
+
+    @GetMapping("/{id}")
+    public Employee getEmployeeById(@PathVariable int id) {
+        return employees.stream()
+                .filter(e -> e.getEmpId() == id)
+                .findFirst()
+                .orElse(null);
     }
 }
+

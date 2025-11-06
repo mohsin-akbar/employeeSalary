@@ -1,27 +1,26 @@
-package employeeSalry.entity;
+package employeeSalry.payLoad;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+public class EmployeeFullDetails {
 
-import javax.persistence.*;
-
-@Entity
-@Table(name="employee")
-public class Employee {
     private int empId;
     private String name;
     private String email;
     private String dept;
+    private double basic;
+    private double bonus;
 
-    // getters, setters, constructors
-    public Employee(int empId, String name, String email, String dept) {
+
+    public EmployeeFullDetails() {
+    }
+
+    public EmployeeFullDetails(int empId, String name, String email, String dept, double basic, double bonus) {
         this.empId = empId;
         this.name = name;
         this.email = email;
         this.dept = dept;
+        this.basic = basic;
+        this.bonus = bonus;
     }
-    public Employee() {}
 
     public int getEmpId() {
         return empId;
@@ -54,6 +53,22 @@ public class Employee {
     public void setDept(String dept) {
         this.dept = dept;
     }
-    // getters/setters omitted for brevity
+
+    public double getBasic() {
+        return basic;
+    }
+
+    public void setBasic(double basic) {
+        this.basic = basic;
+    }
+
+    public double getBonus() {
+        return bonus;
+    }
+
+    public void setBonus(double bonus) {
+        this.bonus = bonus;
+    }
+
 
 }
