@@ -19,6 +19,7 @@ public class EmployeeController {
         employees.add(new Employee(101, "Mohsin", "mohsin@gmail.com", "IT"));
         employees.add(new Employee(102, "Deepika", "deepika@gmail.com", "HR"));
 	employees.add(new Employee(102, "Deepak", "deepak@gmail.com", "HC"));
+	employees.add(new Employee(103, "Deepak", "deepak@gmail.com", "HC"));
     }
 
     //for validating the user/admin
